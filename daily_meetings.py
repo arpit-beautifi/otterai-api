@@ -24,14 +24,6 @@ def get_output_path(meeting_date):
     return base / f"{meeting_date.isoformat()}.md"
 
 
-def get_action_items(otter, otid):
-    response = otter._session.get(
-        OtterAI.API_BASE_URL + "speech_action_items",
-        params={"userid": otter._userid, "otid": otid},
-    )
-    if response.status_code != 200:
-        return []
-    return response.json().get("speech_action_items", [])
 
 
 def parse_outline(speech):
@@ -48,7 +40,7 @@ def parse_outline(speech):
 
 
 def parse_meeting(speech, otter):
-    action_items = get_action_items(otter, speech["otid"])
+    action_items = otter.get_action_items(speech["otid"])["data"].get("speech_action_items", [])
     return {
         "title": speech.get("title", "Untitled meeting"),
         "start_time": speech["start_time"],
