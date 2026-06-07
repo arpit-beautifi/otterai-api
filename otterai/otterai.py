@@ -252,6 +252,18 @@ class OtterAI:
 
         return self._handle_response(response)
 
+    # Get action items for a speech
+    def get_action_items(self, speech_id):
+        action_items_url = OtterAI.API_BASE_URL + "speech_action_items"
+        if self._is_userid_invalid():
+            raise OtterAIException("userid is invalid")
+
+        payload = {"userid": self._userid, "otid": speech_id}
+
+        response = self._session.get(action_items_url, params=payload)
+        
+        return self._handle_response(response)
+
     def speech_start(self):
         speech_start_uel = OtterAI.API_BASE_URL + "speech_start"
         ### TODO
