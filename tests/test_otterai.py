@@ -124,6 +124,15 @@ def test_get_folders_invalid_userid():
     with pytest.raises(OtterAIException, match="userid is invalid"):
         otter.get_folders()
 
+def test_get_action_items_invalid_userid():
+    otter = OtterAI()
+    with pytest.raises(OtterAIException, match="userid is invalid"):
+        otter.get_action_items("dummyid")
+
+def test_get_action_items(logged_in_otter):
+    response = logged_in_otter.get_action_items("dummyid")
+    assert response["status"] == 200
+    assert response["data"].get("speech_action_items") is not None
 
 def test_stop_speech():
     otter = OtterAI()
